@@ -178,7 +178,7 @@ class SmartHeater:
             print("CPU temperature: not available")
 
         # GPU Status
-        print(f"GPU active: {'Yes' if stats['gpu_active'] else 'No'}")
+        print(f"GPU Mode active: {'Yes' if stats['gpu_active'] else 'No'}")
         if stats['gpu_percent']:
             print(f"GPU usage: {stats['gpu_percent']:.1f}%")
         else:
@@ -240,8 +240,9 @@ class SmartHeater:
         if gpu_temp is not None:
             if gpu_temp >= self.gpu_max_temp and self.gpu_running:
                 self._stop_gpu_heater()
-            elif gpu_temp <= self.gpu_min_temp and not self.gpu_running:
+            elif gpu_temp <= self.gpu_target_temp and not self.gpu_running:
                 self._start_gpu_heater()
+                return
             elif gpu_temp > self.gpu_target_temp and self.gpu_running:
                 self._stop_gpu_heater()
 
@@ -251,6 +252,7 @@ class SmartHeater:
                 self._stop_gpu_heater()
             elif gpu_usage < self.min_idle_threshold and not self.gpu_running:
                 self._start_gpu_heater()
+                return
 
     def _start_gpu_heater(self):
         if self.gpu_running:
