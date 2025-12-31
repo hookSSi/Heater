@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "room-heater"
+version = "0.0.1"
+description = "A program that dynamically utilizes system resources to warm a room"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "HookSSi", email = "sounghoo12@gamil.com"}
+]
+keywords = ["setuptools", "development", "heater", "cpu", "temperature", "utility"]
+
+dependencies = [
+    "psutil>=7.2.1"
+]
+
+[project.optional-dependencies]
+windows = ["WinTmp<=1.2.0"]
+full = ["gputil>=1.4.0", "WinTmp<=1.2.0"]
+
+[project.scripts]
+room_heater = "room_heater:main"
+
+[project.urls]
+Homepage = "https://github.com/hookSSi/Heater"
+Repository = "https://github.com/hookSSi/Heater"
+Issues = "https://github.com/hookSSi/Heater/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/room_heater"]
