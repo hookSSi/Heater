@@ -9,18 +9,34 @@ description = "A program that dynamically utilizes system resources to warm a ro
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    {name = "HookSSi", email = "sounghoo12@gamil.com"}
+    {name = "HookSSi", email = "sounghoo12@gmail.com"}
 ]
 keywords = ["setuptools", "development", "heater", "cpu", "temperature", "utility"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Utilities",
+]
 
 dependencies = [
-    "psutil>=7.2.1"
+    "psutil>=7.2.1",
+    "numpy>=2.4.0"
 ]
 
 [project.optional-dependencies]
 windows = ["WinTmp<=1.2.0"]
-gpu = ["gputil>=1.4.0", "numpy>=2.4.0", "nvidia-ml-py>=12.0.0"]
-full = ["gputil>=1.4.0", "numpy>=2.4.0", "nvidia-ml-py>=12.0.0", "WinTmp<=1.2.0"]
+gpu = ["gputil>=1.4.0", "nvidia-ml-py>=12.0.0"]
+full = ["gputil>=1.4.0", "nvidia-ml-py>=12.0.0", "WinTmp<=1.2.0"]
 
 [project.scripts]
 room_heater = "room_heater:main"
