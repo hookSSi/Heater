@@ -19,7 +19,8 @@ dependencies = [
 
 [project.optional-dependencies]
 windows = ["WinTmp<=1.2.0"]
-full = ["gputil>=1.4.0", "WinTmp<=1.2.0"]
+gpu = ["gputil>=1.4.0", "numpy>=2.4.0", "nvidia-ml-py>=12.0.0"]
+full = ["gputil>=1.4.0", "numpy>=2.4.0", "nvidia-ml-py>=12.0.0", "WinTmp<=1.2.0"]
 
 [project.scripts]
 room_heater = "room_heater:main"
