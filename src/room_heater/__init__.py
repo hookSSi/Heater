@@ -1,4 +1,4 @@
-__vesion__ = "0.0.1"
+__vesion__ = "0.0.2"
 
 import sys
 
