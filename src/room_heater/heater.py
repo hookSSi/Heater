@@ -77,14 +77,11 @@ class SmartHeater:
         self.cpu_processes = []
         self.cpu_max_temp = 90
         self.cpu_target_temp = 85
-        self.cpu_min_temp = 50
-
         # GPU
         self.gpu_thread = None
         self.gpu_stop_event = threading.Event()
         self.gpu_max_temp = 90
         self.gpu_target_temp = 85
-        self.gpu_min_temp = 45
         self.gpu_running = False
 
         # For usage based adjustment
@@ -208,12 +205,8 @@ class SmartHeater:
                 worker = self.cpu_processes.pop()
                 worker.terminate()
                 return
-            elif cpu_temp <= self.cpu_min_temp and current_workers < max_workers:
+            elif cpu_temp <= self.cpu_target_temp and current_workers < max_workers:
                 self._add_cpu_worker()
-                return
-            elif cpu_temp > self.cpu_target_temp and current_workers > 1:
-                worker = self.cpu_processes.pop()
-                worker.terminate()
                 return
 
         # based on usage
@@ -233,9 +226,6 @@ class SmartHeater:
         if not TORCH_AVAILABLE:
             return
 
-        if not self.gpu_running:
-            return
-
         # based on temperature
         if gpu_temp is not None:
             if gpu_temp >= self.gpu_max_temp and self.gpu_running:
@@ -243,8 +233,6 @@ class SmartHeater:
             elif gpu_temp <= self.gpu_target_temp and not self.gpu_running:
                 self._start_gpu_heater()
                 return
-            elif gpu_temp > self.gpu_target_temp and self.gpu_running:
-                self._stop_gpu_heater()
 
         # base on usage
         if gpu_usage is not None:
@@ -256,7 +244,6 @@ class SmartHeater:
 
     def _start_gpu_heater(self):
         if self.gpu_running:
-            self._stop_gpu_heater()
             return
 
         self.gpu_stop_event.clear()
@@ -286,7 +273,12 @@ class SmartHeater:
             self._add_cpu_worker()
 
         if TORCH_AVAILABLE:
-            self._start_gpu_heater()
+            test_temp = self.get_gpu_temperature()
+            test_usage = self.get_gpu_percent()
+            if test_temp is not None or test_usage is not None:
+                self._start_gpu_heater()
+            else:
+                print("GPU temperature/usage not measurable, skipping GPU heater")
         
         try:
             while self.running:
