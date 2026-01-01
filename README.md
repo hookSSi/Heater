@@ -8,9 +8,10 @@ KEEP WARM YOUR ROOM FOR CODING
 ## Install
 
 ```
-pip install room_heater
+pip install room-heater
 python -m room_heater
 ```
+Maybe you need authority for windows
 
 ## Contribute
 
